@@ -1,6 +1,15 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
+
+install the project:
+```bash
+git clone git@github.com:gaetanBoyron/test-front.git
+cd test-front/
+
+npm install
+# or
+yarn dev
+```
+
 
 First, run the development server:
 
