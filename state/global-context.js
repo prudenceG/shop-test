@@ -12,6 +12,10 @@ export class GlobalProvider extends Component {
             getCart: this.getCart.bind(this),
             addProductToCart: this.addProductToCart.bind(this),
             removeProductToCart: this.removeProductToCart.bind(this),
+            wishlist: [],
+            getWishlist: this.getWishlist.bind(this),
+            addProductToWishlist: this.addProductToWishlist.bind(this),
+            removeProductToWishlist: this.removeProductFromWishlist.bind(this),
         }
     }
 
@@ -52,13 +56,25 @@ export class GlobalProvider extends Component {
         });
     }
 
+    getWishlist() {
+        console.log('get whislist');
+    }
+
+    addProductToWishlist() {
+        console.log('add product to wishlist');
+    }
+    
+    removeProductFromWishlist() {
+        console.log('delete product to wishlist');
+    }
+
     componentDidMount() {
         this.getCart()
     }
 
     render() {
         const { children } = this.props;
-
+        
         return (
             <GlobalContext.Provider value={{ ...this.state }}>
                 {children}
@@ -71,5 +87,4 @@ GlobalProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-export const GlobalConsumer = GlobalContext.Consumer;
 export default GlobalContext;

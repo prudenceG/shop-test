@@ -6,10 +6,11 @@ import {
     Typography,
     Button,
     withStyles,
-    IconButton
 } from '@material-ui/core'
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import {useContext} from "react";
+import FavoriteIcon from '@material-ui/icons/Favorite';
+
+import {useContext, useState} from "react";
 import GlobalContext from "../../state/global-context";
 
 const useStyles = theme => ({
@@ -19,13 +20,43 @@ const useStyles = theme => ({
         flexDirection: "column",
         justifyContent: 'space-between',
         alignItems: 'flex-start',
+        position: 'relative',
+    },
+    buttonsContainer: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0, 
+        right: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        flexDirection: "column",
+        justifyContent: 'center',
+        alignItems: 'center',
+
+    },
+    wishlistButton: {
+        backgroundColor: theme.palette.primary.wishlist,
+        '&:hover': {
+            backgroundColor: theme.palette.secondary.wishlist, 
+        },
+        marginBottom: 20,
+        width: "80%",
+    },
+    cartButton: {
+        backgroundColor: theme.palette.primary.main,
+        color: "white",
+        '&:hover': {
+            backgroundColor: theme.palette.secondary.main, 
+        },
+        width: "80%",
     },
     content: {
         width: "100%",
     },
     thumbnailContainer: {
         padding: theme.spacing(2),
-        textAlign: "cetner",
+        textAlign: "center",
     },
     thumbnail: {
         maxHeight: '170px',
@@ -40,13 +71,26 @@ const useStyles = theme => ({
 const ProductCard = (props) => {
     const {classes, product} = props
     const context = useContext(GlobalContext);
+    const [isDisplayed, setIsDisplayed] = useState('none');
+
+    const wishlistCtaStyles = {
+        display: isDisplayed,
+    }
 
     const handleAddToCart = (e, product) => {
         context.addProductToCart(product, context.pushObject('open_interstitial', true))
     }
+    
+    const handleAddToWishlist = (product) => {
+        context.addProductToWishlist();
+    }
+
+    const handleHover = (dispayValue) => {
+        setIsDisplayed(dispayValue);
+    }
 
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} onMouseOver={() => handleHover('flex')} onMouseLeave={() => handleHover('none')}>
             <CardContent className={classes.content}>
                 <div className={classes.thumbnailContainer}>
                     <CardMedia
@@ -67,10 +111,25 @@ const ProductCard = (props) => {
                     {product.price}
                 </Typography>
             </CardContent>
-            <CardActions>
-                <IconButton onClick={e => handleAddToCart(e, product)}>
-                    <ShoppingBasketIcon color="secondary"/>
-                </IconButton>
+            <CardActions className={classes.buttonsContainer} style={wishlistCtaStyles}>
+                <Button
+                    variant="contained"
+                    className={classes.wishlistButton}
+                    size="large"
+                    endIcon={<FavoriteIcon />}
+                    onClick={() => handleAddToWishlist(product)}
+                >
+                    Save it
+                </Button>
+                <Button
+                    variant="contained"
+                    className={classes.cartButton}
+                    size="large"
+                    endIcon={<ShoppingBasketIcon />}
+                    onClick={e => handleAddToCart(e, product)}
+                >
+                    Add it
+                </Button>
             </CardActions>
         </Card>
     )

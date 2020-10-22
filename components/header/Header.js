@@ -1,4 +1,4 @@
-import {withStyles, AppBar, Toolbar, Typography, IconButton, Container, FormHelperText} from '@material-ui/core'
+import {withStyles, AppBar, Toolbar, Typography, IconButton, Container} from '@material-ui/core'
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Link from 'next/link'
@@ -29,7 +29,7 @@ const useStyles = theme => ({
         position: "absolute",
         top: 10,
         right: 0,
-        backgroundColor: "#fcb603",
+        backgroundColor: theme.palette.primary.wishlist,
         textAlign: "center",
         display: "flex",
         flexDirection: "column",
@@ -37,9 +37,7 @@ const useStyles = theme => ({
 
     },
     number: {
-        color: "black",
         margin: 0,
-        fontSize: "12px",
         fontWeight: "bold",
     },
 });
@@ -81,7 +79,9 @@ const Header = props => {
                                     <FavoriteIcon className={classes.icon}/>
                                 </IconButton>
                                 <div className={classes.circle}>
-                                    <p className={classes.number}>1</p>
+                                    <Typography variant="caption" color="textPrimary" component="p" className={classes.number}>
+                                        45
+                                    </Typography>
                                 </div>
                             </>
                         </div>
