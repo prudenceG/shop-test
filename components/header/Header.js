@@ -1,8 +1,9 @@
-import {withStyles, AppBar, Toolbar, Typography, IconButton, Container} from '@material-ui/core'
+import {withStyles, AppBar, Toolbar, Typography, IconButton, Container, FormHelperText} from '@material-ui/core'
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import Link from 'next/link'
 import Interstitial from '../Interstitial'
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import GlobalContext from "../../state/global-context";
 
 const useStyles = theme => ({
@@ -11,9 +12,36 @@ const useStyles = theme => ({
         display: "flex",
         justifyContent: "space-between",
     },
-    cartIcon: {
+    iconsContainer: {
+        display: "flex",
+        alignItems: "center",
+    },
+    iconButton: {
+        position: "relative",
+    },
+    icon: {
         color: theme.palette.light,
-    }
+    },
+    circle: {
+        width: 20,
+        height: 20,
+        borderRadius: 40,
+        position: "absolute",
+        top: 10,
+        right: 0,
+        backgroundColor: "#fcb603",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+
+    },
+    number: {
+        color: "black",
+        margin: 0,
+        fontSize: "12px",
+        fontWeight: "bold",
+    },
 });
 
 const Header = props => {
@@ -26,6 +54,10 @@ const Header = props => {
         }
         context.pushObject('open_interstitial', true);
     };
+
+    const openWishlist = () => {
+        context.getWishlist();
+    }
 
     return (
         <>
@@ -40,15 +72,25 @@ const Header = props => {
                                 </Typography>
                             </a>
                         </Link>
-                        <IconButton onClick={toggleDrawer(!context.open_interstitial)}>
-                            <ShoppingBasketIcon className={classes.cartIcon}/>
-                        </IconButton>
+                        <div className={classes.iconsContainer}>
+                            <IconButton onClick={toggleDrawer(!context.open_interstitial)}>
+                                <ShoppingBasketIcon className={classes.icon}/>
+                            </IconButton>
+                            <>
+                                <IconButton className={classes.iconButton} onClick={() => openWishlist()}>
+                                    <FavoriteIcon className={classes.icon}/>
+                                </IconButton>
+                                <div className={classes.circle}>
+                                    <p className={classes.number}>1</p>
+                                </div>
+                            </>
+                        </div>
                     </Toolbar>
                 </Container>
             </AppBar>
         </header>
         <Interstitial/>
-            </>
+        </>
     )
 }
 
