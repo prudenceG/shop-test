@@ -1,10 +1,10 @@
-import {withStyles, AppBar, Toolbar, Typography, IconButton, Container} from '@material-ui/core'
+import { useContext } from 'react';
+import GlobalContext from "../../state/global-context";
+import Interstitial from '../Interstitial'
+import Link from 'next/link'
+import { withStyles, AppBar, Toolbar, Typography, IconButton, Container } from '@material-ui/core'
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import Link from 'next/link'
-import Interstitial from '../Interstitial'
-import {useContext} from "react";
-import GlobalContext from "../../state/global-context";
 
 const useStyles = theme => ({
     toolbar: {
@@ -43,18 +43,18 @@ const useStyles = theme => ({
 });
 
 const Header = props => {
-    const {classes} = props
     const context = useContext(GlobalContext);
+    const { wishlist, pushObject } = context;
+    const { classes } = props
 
     const toggleDrawer = (open) => (event) => {
         if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
-        context.pushObject('open_interstitial', true);
+        pushObject('open_interstitial', true);
     };
 
     const openWishlist = () => {
-        context.getWishlist();
     }
 
     return (
@@ -78,11 +78,11 @@ const Header = props => {
                                 <IconButton className={classes.iconButton} onClick={() => openWishlist()}>
                                     <FavoriteIcon className={classes.icon}/>
                                 </IconButton>
-                                <div className={classes.circle}>
+                                {wishlist.length !== 0 && <div className={classes.circle}>
                                     <Typography variant="caption" color="textPrimary" component="p" className={classes.number}>
-                                        45
+                                        {wishlist.length}
                                     </Typography>
-                                </div>
+                                </div>}
                             </>
                         </div>
                     </Toolbar>
