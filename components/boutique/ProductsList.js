@@ -1,14 +1,21 @@
+import { useContext, useEffect } from 'react';
+import GlobalContext from '../../state/global-context';
 import ProductCard from './ProductCard'
-import {Grid, withStyles} from "@material-ui/core";
-import ProductsList from "../../pages/boutique";
-
-const useStyles = theme => ({
-
-});
+import TransitionAlert from './../transitionAlert/TransitionAlert';
+import { Grid } from "@material-ui/core";
 
 const ProductList = (props) => {
-    const {classes, products} = props
+    const context = useContext(GlobalContext);
+    const {updateTransitionAlert, transitionAlert} = context;
+    const {products} = props;
+
+    useEffect(() => {
+        return () => updateTransitionAlert({isOpen: false});
+    }, [])
+    
     return (
+        <>
+        {transitionAlert.isOpen && <TransitionAlert />}
         <Grid container spacing={2}>
             {products.map((product, index) => (
                 <Grid item xs={6} md={4} key={index}>
@@ -16,7 +23,8 @@ const ProductList = (props) => {
                 </Grid>
             ))}
         </Grid>
+        </>
     )
 }
 
-export default withStyles(useStyles)(ProductList)
+export default ProductList;
