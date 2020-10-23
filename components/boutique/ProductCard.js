@@ -35,6 +35,9 @@ const useStyles = theme => ({
         alignItems: 'center',
 
     },
+    favoriteIcon: {
+        color: theme.palette.favorite,
+    },
     wishlistButton: {
         backgroundColor: theme.palette.primary.wishlist,
         '&:hover': {
@@ -71,6 +74,7 @@ const useStyles = theme => ({
 const ProductCard = (props) => {
     const {classes, product} = props
     const context = useContext(GlobalContext);
+    const { addProductToCart, addProductToWishlist, pushObject, findById, wishlist } = context;
     const [isDisplayed, setIsDisplayed] = useState('none');
 
     const wishlistCtaStyles = {
@@ -78,20 +82,23 @@ const ProductCard = (props) => {
     }
 
     const handleAddToCart = (e, product) => {
-        context.addProductToCart(product, context.pushObject('open_interstitial', true))
+        addProductToCart(product, pushObject('open_interstitial', true))
     }
     
     const handleAddToWishlist = (product) => {
-        context.addProductToWishlist();
+        addProductToWishlist(product);
     }
 
     const handleHover = (dispayValue) => {
         setIsDisplayed(dispayValue);
     }
 
+    const productInWishlist = findById(product.id, wishlist);
+
     return (
         <Card className={classes.root} onMouseOver={() => handleHover('flex')} onMouseLeave={() => handleHover('none')}>
             <CardContent className={classes.content}>
+                {productInWishlist && <FavoriteIcon className={classes.favoriteIcon}/>}
                 <div className={classes.thumbnailContainer}>
                     <CardMedia
                         component="img"
