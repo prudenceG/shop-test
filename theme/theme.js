@@ -12,6 +12,7 @@ const theme = createMuiTheme({
         },
         accent: '#00818a',
         light: '#dbedf3',
+        favorite: '#d42424',
     },
     spacing: 8,
 })
