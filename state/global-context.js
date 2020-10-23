@@ -1,11 +1,15 @@
-import { createContext, Component } from 'react';
 const GlobalContext = createContext();
+import { createContext, Component } from 'react';
+import { wishlistSuccessAlert, wishlistInfoAlert } from './../components/transitionAlert/TransitionAlert';
 import PropTypes from 'prop-types';
 
 export class GlobalProvider extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            transitionAlert: {
+                isOpen: false,
+            },
             open_interstitial: false,
             cart: [],
             pushObject: this.pushObject.bind(this),
@@ -16,6 +20,8 @@ export class GlobalProvider extends Component {
             getWishlist: this.getWishlist.bind(this),
             addProductToWishlist: this.addProductToWishlist.bind(this),
             removeProductToWishlist: this.removeProductFromWishlist.bind(this),
+            findById: this.findbyId.bind(this),
+            updateTransitionAlert: this.updateTransitionAlert.bind(this),
         }
     }
 
@@ -56,12 +62,35 @@ export class GlobalProvider extends Component {
         });
     }
 
-    getWishlist() {
-        console.log('get whislist');
+    findbyId(id, array) {
+        return array.find(element => element.id === id);
     }
 
-    addProductToWishlist() {
-        console.log('add product to wishlist');
+    updateTransitionAlert(values) {
+        this.setState({
+            transitionAlert: {
+                ...this.state.transitionAlert,
+                ...values
+            },
+        })
+    }
+
+    getWishlist() {
+        return this.state.wishlist;
+    }
+
+    addProductToWishlist(product) {
+        const productFinded = this.findbyId(product.id, this.state.wishlist);
+       
+        if (!productFinded) {
+            const newWishlist = [...this.state.wishlist, product];
+            this.setState({wishlist: newWishlist}, () => sessionStorage.setItem('wishlist', JSON.stringify(newWishlist)));
+            this.updateTransitionAlert(wishlistSuccessAlert);
+            
+            return;
+        }
+
+        this.updateTransitionAlert(wishlistInfoAlert);
     }
     
     removeProductFromWishlist() {
