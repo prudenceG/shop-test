@@ -108,10 +108,10 @@ const ProductCard = (props) => {
     const renderButtons = (product) => {
         return (
             <CardActions className={classes.buttonsContainer}>
-                <Button
+                 <Button
                     variant="contained"
                     className={classes.wishlistButton}
-                    size="large"
+                    size="medium"
                     endIcon={<FavoriteIcon />}
                     onClick={() => handleAddToWishlist(product)}
                 >
@@ -120,7 +120,7 @@ const ProductCard = (props) => {
                 <Button
                     variant="contained"
                     className={classes.cartButton}
-                    size="large"
+                    size="medium"
                     endIcon={<ShoppingBasketIcon />}
                     onClick={e => handleAddToCart(e, product)}
                 >
