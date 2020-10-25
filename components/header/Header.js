@@ -74,16 +74,20 @@ const Header = props => {
                             <IconButton onClick={toggleDrawer(!context.open_interstitial)}>
                                 <ShoppingBasketIcon className={classes.icon}/>
                             </IconButton>
-                            <>
-                                <IconButton className={classes.iconButton} onClick={() => openWishlist()}>
-                                    <FavoriteIcon className={classes.icon}/>
-                                </IconButton>
-                                {wishlist.length !== 0 && <div className={classes.circle}>
-                                    <Typography variant="caption" color="textPrimary" component="p" className={classes.number}>
-                                        {wishlist.length}
-                                    </Typography>
-                                </div>}
-                            </>
+                            <Link href="/wishlist" passHref>
+                                <a>
+                                    <IconButton className={classes.iconButton} onClick={() => openWishlist()}>
+                                        <FavoriteIcon className={classes.icon}/>
+                                    </IconButton>
+                                    {wishlist.length !== 0 &&
+                                        <div className={classes.circle}>
+                                            <Typography variant="caption" color="textPrimary" component="p" className={classes.number}>
+                                                {wishlist.length}
+                                            </Typography>
+                                        </div>
+                                    }
+                                </a>
+                            </Link>
                         </div>
                     </Toolbar>
                 </Container>

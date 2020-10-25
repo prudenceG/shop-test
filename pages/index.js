@@ -8,6 +8,7 @@ const useStyles = theme => ({
 
 const  Home = props => {
     const {classes} = props
+
     return (
         <DefaultLayaout>
             <Container maxWidth="sm" className={classes.container}>
