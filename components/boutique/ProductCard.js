@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core'
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import Fade from '@material-ui/core/Fade';
 
 import {useContext, useState} from "react";
 import GlobalContext from "../../state/global-context";
@@ -21,6 +22,9 @@ const useStyles = theme => ({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
         position: 'relative',
+    },
+    buttonsContainerParent: {
+        width: '100%',
     },
     buttonsContainer: {
         position: 'absolute',
@@ -83,9 +87,7 @@ const ProductCard = (props) => {
     const {classes, product, isTabletOrBelow} = props
     const context = useContext(GlobalContext);
     const { addProductToCart, addProductToWishlist, pushObject, findById, wishlist } = context;
-    const [isDisplayed, setIsDisplayed] = useState('none');
-    const wishlistCtaStyles = !isTabletOrBelow ? {display: isDisplayed} : {display: 'flex'};
-   
+    const [isDisplayed, setIsDisplayed] = useState(false);   
 
     const handleAddToCart = (e, product) => {
         addProductToCart(product, pushObject('open_interstitial', true))
@@ -103,8 +105,33 @@ const ProductCard = (props) => {
 
     const productInWishlist = findById(product.id, wishlist);
 
+    const renderButtons = (product) => {
+        return (
+            <CardActions className={classes.buttonsContainer}>
+                <Button
+                    variant="contained"
+                    className={classes.wishlistButton}
+                    size="large"
+                    endIcon={<FavoriteIcon />}
+                    onClick={() => handleAddToWishlist(product)}
+                >
+                    Save it
+                </Button>
+                <Button
+                    variant="contained"
+                    className={classes.cartButton}
+                    size="large"
+                    endIcon={<ShoppingBasketIcon />}
+                    onClick={e => handleAddToCart(e, product)}
+                >
+                    Add it
+                </Button>
+            </CardActions>
+        );
+    }
+
     return (
-        <Card className={classes.root} onMouseOver={() => handleHover('flex')} onMouseLeave={() => handleHover('none')}>
+        <Card className={classes.root} onMouseOver={() => handleHover(true)} onMouseLeave={() => handleHover(false)}>
             <CardContent className={classes.content}>
                 {productInWishlist && <FavoriteIcon className={classes.favoriteIcon}/>}
                 <div className={classes.thumbnailContainer}>
@@ -126,26 +153,10 @@ const ProductCard = (props) => {
                     {product.price}
                 </Typography>
             </CardContent>
-            <CardActions className={classes.buttonsContainer} style={wishlistCtaStyles}>
-                <Button
-                    variant="contained"
-                    className={classes.wishlistButton}
-                    size="large"
-                    endIcon={<FavoriteIcon />}
-                    onClick={() => handleAddToWishlist(product)}
-                >
-                    Save it
-                </Button>
-                <Button
-                    variant="contained"
-                    className={classes.cartButton}
-                    size="large"
-                    endIcon={<ShoppingBasketIcon />}
-                    onClick={e => handleAddToCart(e, product)}
-                >
-                    Add it
-                </Button>
-            </CardActions>
+            {!isTabletOrBelow
+                ? <Fade in={isDisplayed} timeout={300}>{renderButtons(product)}</Fade> 
+                : <CardActions className={classes.buttonsContainerParent}>{renderButtons(product)}</CardActions>
+            }
         </Card>
     )
 }
