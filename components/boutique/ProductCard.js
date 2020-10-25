@@ -33,7 +33,12 @@ const useStyles = theme => ({
         flexDirection: "column",
         justifyContent: 'center',
         alignItems: 'center',
-
+        [theme.breakpoints.between('xs', 'sm')]: {
+            position: 'static',
+            backgroundColor: 'white',
+            flexDirection: 'row',
+            width: '100%',
+        },
     },
     favoriteIcon: {
         color: theme.palette.favorite,
@@ -45,6 +50,9 @@ const useStyles = theme => ({
         },
         marginBottom: 20,
         width: "80%",
+        [theme.breakpoints.between('xs', 'sm')]: {
+            marginBottom: 0,
+        },
     },
     cartButton: {
         backgroundColor: theme.palette.primary.main,
@@ -72,14 +80,12 @@ const useStyles = theme => ({
 });
 
 const ProductCard = (props) => {
-    const {classes, product} = props
+    const {classes, product, isTabletOrBelow} = props
     const context = useContext(GlobalContext);
     const { addProductToCart, addProductToWishlist, pushObject, findById, wishlist } = context;
     const [isDisplayed, setIsDisplayed] = useState('none');
-
-    const wishlistCtaStyles = {
-        display: isDisplayed,
-    }
+    const wishlistCtaStyles = !isTabletOrBelow ? {display: isDisplayed} : {display: 'flex'};
+   
 
     const handleAddToCart = (e, product) => {
         addProductToCart(product, pushObject('open_interstitial', true))
@@ -90,7 +96,9 @@ const ProductCard = (props) => {
     }
 
     const handleHover = (dispayValue) => {
-        setIsDisplayed(dispayValue);
+        if (!isTabletOrBelow) {
+            setIsDisplayed(dispayValue);
+        }
     }
 
     const productInWishlist = findById(product.id, wishlist);
