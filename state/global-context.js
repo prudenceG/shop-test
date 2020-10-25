@@ -19,7 +19,7 @@ export class GlobalProvider extends Component {
             wishlist: [],
             getWishlist: this.getWishlist.bind(this),
             addProductToWishlist: this.addProductToWishlist.bind(this),
-            removeProductToWishlist: this.removeProductFromWishlist.bind(this),
+            removeProductFromWishlist: this.removeProductFromWishlist.bind(this),
             findById: this.findbyId.bind(this),
             updateTransitionAlert: this.updateTransitionAlert.bind(this),
         }
@@ -76,7 +76,9 @@ export class GlobalProvider extends Component {
     }
 
     getWishlist() {
-        return this.state.wishlist;
+        const wishlist = JSON.parse(sessionStorage.getItem('wishlist'));
+
+        if (wishlist) this.setState({wishlist})
     }
 
     addProductToWishlist(product) {
@@ -93,12 +95,14 @@ export class GlobalProvider extends Component {
         this.updateTransitionAlert(wishlistInfoAlert);
     }
     
-    removeProductFromWishlist() {
-        console.log('delete product to wishlist');
+    removeProductFromWishlist(id) {
+        const newWishlist = this.state.wishlist.filter(product => product.id !== id);
+        this.setState({wishlist: newWishlist}, () => sessionStorage.setItem('wishlist', JSON.stringify(newWishlist)));
     }
 
     componentDidMount() {
         this.getCart()
+        this.getWishlist();
     }
 
     render() {
