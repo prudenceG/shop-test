@@ -10,6 +10,9 @@ import theme from '../theme/theme';
 const useStyles = (theme) => ({
     root: {
         minHeight: "100vh",
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between'
     },
 });
 
@@ -19,13 +22,14 @@ const  DefaultLayout = (props) => {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <div className={classes.root}>
+                <div>
+                    {/*Header*/}
+                    <Header/>
 
-                {/*Header*/}
-                <Header/>
-
-                <main>
-                    {props.children}
-                </main>
+                    <main>
+                        {props.children}
+                    </main>
+                </div>
 
                 {/*Footer*/}
                 <Footer/>
