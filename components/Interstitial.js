@@ -1,10 +1,9 @@
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import {withStyles, Typography, Button, Grid, Card, IconButton, CardMedia} from '@material-ui/core'
-import {useContext} from 'react'
-import GlobalContext from '../state/global-context';
+import { withStyles, Typography, Button, Grid, Card, IconButton, CardMedia } from '@material-ui/core'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {useEffect, useState} from "react";
+import { useEffect, useState, useContext } from "react";
+import { Cart } from './../store/cart';
 
 const useStyles = theme => ({
     interstitial: {
@@ -38,17 +37,20 @@ const useStyles = theme => ({
 });
 
 const Interstitial = props => {
-    const {classes} = props;
-    const context = useContext(GlobalContext);
-    const cart = context.cart
+    const cartState = useContext(Cart.State);
+    const cartDispatch = useContext(Cart.Dispatch);
     const [totalPrice, setTotalPrice] = useState(0)
+    
+    const { classes } = props;
+    const { cart, open_interstitial } = cartState;
+    const { pushObject, removeProductToCart } = cartDispatch;
 
     useEffect(() => {
         getTotalPrice()
     })
 
     const handleRemoveProduct = id => {
-        context.removeProductToCart(id)
+        removeProductToCart(id)
     }
 
     const getTotalPrice = () => {
@@ -62,14 +64,14 @@ const Interstitial = props => {
     return (
         <SwipeableDrawer
             anchor={'right'}
-            open={context.open_interstitial}
-            onClose={() => context.pushObject('open_interstitial', false)}
-            onOpen={() => context.pushObject('open_interstitial', false)}
+            open={open_interstitial}
+            onClose={() => pushObject('open_interstitial', false)}
+            onOpen={() => pushObject('open_interstitial', false)}
         >
             <div className={classes.interstitial}>
                 <Grid container alignItems="center" className={classes.productListContainer}>
                     <Grid item>
-                        <IconButton onClick={() => context.pushObject('open_interstitial', false)}>
+                        <IconButton onClick={() => pushObject('open_interstitial', false)}>
                             <ArrowBackIcon color="secondary"/>
                         </IconButton>
                     </Grid>
@@ -82,7 +84,7 @@ const Interstitial = props => {
 
                     <Grid item xs={12}>
                         <Typography>
-                            {context.cart.length > 1 ? `${context.cart.length} produits`  : `${context.cart.length} produit`}
+                            {cart.length > 1 ? `${cart.length} produits`  : `${cart.length} produit`}
                         </Typography>
                     </Grid>
 

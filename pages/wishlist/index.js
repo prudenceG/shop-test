@@ -1,8 +1,6 @@
-import React, { useContext } from 'react';
 import { withStyles, Container, Grid, Typography } from '@material-ui/core';
 import DefaultLayaout from '../../components/DefaultLayout';
 import ProductWishlist from '../../components/wishlist/ProductWishlist';
-import GlobalContext from '../../state/global-context';
 
 const useStyles = (theme) => ({
   root: {
@@ -15,9 +13,8 @@ const useStyles = (theme) => ({
 })
 
 const Wishlist = (props) => {
-  const context = useContext(GlobalContext)
   const { classes } = props;
-  
+
   return (
     <DefaultLayaout>
       <Container maxWidth="lg" className={classes.root}>
@@ -28,7 +25,7 @@ const Wishlist = (props) => {
         </Grid>
 
         <Grid>
-          <ProductWishlist wishlist={context.wishlist} />
+          <ProductWishlist />
         </Grid>
       </Container>
     </DefaultLayaout>

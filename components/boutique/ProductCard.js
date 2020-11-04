@@ -1,3 +1,8 @@
+import { useContext, useState, memo } from "react";
+import { Wishlist} from './../../store/wishlist';
+import { Cart } from './../../store/cart';
+import { TransitionAlert } from '../../store/transitionAlert';
+import { wishlistSuccessAlert, wishlistInfoAlert } from './../transitionAlert/TransitionAlert'; 
 import {
     Card,
     CardContent,
@@ -11,8 +16,6 @@ import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Fade from '@material-ui/core/Fade';
 
-import {useContext, useState} from "react";
-import GlobalContext from "../../state/global-context";
 
 const useStyles = theme => ({
     root: {
@@ -84,17 +87,24 @@ const useStyles = theme => ({
 });
 
 const ProductCard = (props) => {
-    const {classes, product, isTabletOrBelow} = props
-    const context = useContext(GlobalContext);
-    const { addProductToCart, addProductToWishlist, pushObject, findById, wishlist } = context;
+    const cartDispatch = useContext(Cart.Dispatch);
+    const wishlistState = useContext(Wishlist.State);
+    const transitionAlertDispatch = useContext(TransitionAlert.Dispatch);
     const [isDisplayed, setIsDisplayed] = useState(false);   
+
+    const {classes, product, isTabletOrBelow} = props
+    const { addProductToCart, pushObject } = cartDispatch;
+    const { findById, wishlist, addProductToWishlist } = wishlistState;
+    const { updateTransitionAlert } = transitionAlertDispatch;
 
     const handleAddToCart = (e, product) => {
         addProductToCart(product, pushObject('open_interstitial', true))
     }
     
     const handleAddToWishlist = (product) => {
-        addProductToWishlist(product);
+        const success = addProductToWishlist(product);
+        
+        success ? updateTransitionAlert(wishlistSuccessAlert) : updateTransitionAlert(wishlistInfoAlert);
     }
 
     const handleHover = (dispayValue) => {

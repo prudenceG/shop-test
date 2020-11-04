@@ -1,5 +1,6 @@
 import { Dialog, Container, CardMedia, Typography, withStyles, useTheme, useMediaQuery, IconButton } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
+import { memo } from "react";
 
 const useStyles = (theme) => ({
   imageContainer: {
@@ -41,4 +42,4 @@ const ProductDetailsView = ({classes, open, product, handleClose}) => {
   );
 }
 
-export default withStyles(useStyles)(ProductDetailsView);
+export default withStyles(useStyles)(memo(ProductDetailsView));

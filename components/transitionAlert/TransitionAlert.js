@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { TransitionAlert as TransitionAlertContext } from '../../store/transitionAlert';
 import Alert from '@material-ui/lab/Alert';
-import GlobalContext from '../../state/global-context';
 import { withStyles, Snackbar } from '@material-ui/core'
 
 const useStyles = () => ({
@@ -26,14 +26,15 @@ export const wishlistInfoAlert = {
 }
 
 const TransitionAlert = (props) => {
+  const transitionAlertState = useContext(TransitionAlertContext.State);
   const [open, setOpen] = useState(true);
-  const context = useContext(GlobalContext);
-  const { isOpen, contentText, severity, vertical, horizontal } = context.transitionAlert;
+  
+  const { isOpen, contentText, severity, vertical, horizontal } = transitionAlertState;
   const { classes } = props;
   
   useEffect(() => {
     setOpen(isOpen);
-  }, [context.transitionAlert])
+  }, [transitionAlertState])
 
   const handleClose = () => {
     setOpen(false);

@@ -1,9 +1,10 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useCallback } from 'react';
+import { Cart } from './../../store/cart';
+import { Wishlist } from './../../store/wishlist';
 import { Card, Typography, Divider, withStyles, CardMedia, Container, IconButton, CardActions } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import GlobalContext from '../../state/global-context';
 import ProductDetailsView from './ProductDetailsView';
 
 const useStyles = (theme) => ({
@@ -28,37 +29,33 @@ const useStyles = (theme) => ({
   buttonsContainer: {
     display: 'flex',
   }
-
 });
 
-const WishedProductCard = ({classes, product}) => {
-  const context = useContext(GlobalContext)
+const WishedProductCard = (props) => {
+  const wishlistContext = useContext(Wishlist.State);
+  const cartDispatch = useContext(Cart.Dispatch);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    setOpen(open);
+  const { removeProductFromWishlist } = wishlistContext;
+  const { addProductToCart, pushObject} = cartDispatch;
+  const { classes, product } = props;
 
-    return () => {
-      setOpen(false);
-    }
-  }, [open])
-
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false);
-  };
+  }, []);
 
   const handleRemoveFromWishlist = (id) => () => {
-    context.removeProductFromWishlist(id);
+    removeProductFromWishlist(id);
   }
 
   const handelAddToCart = (product) => () => {
-    context.addProductToCart(product, context.pushObject('open_interstitial', true))
+    addProductToCart(product, pushObject('open_interstitial', true))
   }
   
-  const handleViewProductDetails = () => () => {
+  const handleViewProductDetails = () => {
     setOpen(true);
   }
-
+  
   return (
     <Card className={classes.root}>
       <Container className={classes.imageContainer}>
@@ -78,7 +75,7 @@ const WishedProductCard = ({classes, product}) => {
         <IconButton onClick={handelAddToCart(product)}>
           <ShoppingBasketIcon />
         </IconButton>
-        <IconButton onClick={handleViewProductDetails()}>
+        <IconButton onClick={() => handleViewProductDetails()}>
             <VisibilityIcon />
         </IconButton>
         <IconButton onClick={handleRemoveFromWishlist(product.id)} >

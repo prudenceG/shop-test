@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import GlobalContext from "../../state/global-context";
+import { Cart } from './../../store/cart';
+import { Wishlist } from './../../store/wishlist';
 import Interstitial from '../Interstitial'
 import Link from 'next/link'
 import { withStyles, AppBar, Toolbar, Typography, IconButton, Container } from '@material-ui/core'
@@ -43,8 +44,13 @@ const useStyles = theme => ({
 });
 
 const Header = props => {
-    const context = useContext(GlobalContext);
-    const { wishlist, pushObject } = context;
+    const cartContext = useContext(Cart.State);
+    const cartDispatch = useContext(Cart.Dispatch);
+    const wishlistContext = useContext(Wishlist.State);
+    
+    const { wishlist } = wishlistContext;
+    const { pushObject } = cartDispatch;
+    const { open_interstitial } = cartContext;
     const { classes } = props
 
     const toggleDrawer = (open) => (event) => {
@@ -71,7 +77,7 @@ const Header = props => {
                             </a>
                         </Link>
                         <div className={classes.iconsContainer}>
-                            <IconButton onClick={toggleDrawer(!context.open_interstitial)}>
+                            <IconButton onClick={toggleDrawer(!open_interstitial)}>
                                 <ShoppingBasketIcon className={classes.icon}/>
                             </IconButton>
                             <Link href="/wishlist" passHref>

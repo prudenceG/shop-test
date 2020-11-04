@@ -180,7 +180,8 @@ const productsDatas = [
 ]
 
 const Boutique = props => {
-  const {classes} = props
+  const {classes} = props;
+    
   return (
     <DefaultLayaout>
       <Container maxWidth="lg" className={classes.root}>
