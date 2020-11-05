@@ -5,7 +5,6 @@ import theme from './../theme/theme';
 
 export default class MyDocument extends Document {
   render() {
-    console.log('get Document');
     return (
       <Html lang="en">
         <Head>
