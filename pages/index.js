@@ -1,4 +1,4 @@
-import DefaultLayaout from '../components/DefaultLayout'
+import DefaultLayout from '../components/DefaultLayout'
 import { withStyles, Button, Container, Grid, Typography } from '@material-ui/core'
 import Link from 'next/link'
 
@@ -10,7 +10,7 @@ const  Home = props => {
     const {classes} = props
 
     return (
-        <DefaultLayaout>
+        <DefaultLayout>
             <Container maxWidth="sm" className={classes.container}>
                 <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                     SuperShop
@@ -32,8 +32,7 @@ const  Home = props => {
                     </Grid>
                 </div>
             </Container>
-
-        </DefaultLayaout>
+        </DefaultLayout>
     )
 }
 export default withStyles(useStyles)(Home)

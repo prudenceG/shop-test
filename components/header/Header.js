@@ -60,12 +60,9 @@ const Header = props => {
         pushObject('open_interstitial', true);
     };
 
-    const openWishlist = () => {
-    }
-
     return (
         <>
-        <header className={classes.root}>
+        <header>
             <AppBar position="static" elevation={0}>
                 <Container maxWidth="lg">
                     <Toolbar className={classes.toolbar}>
@@ -82,7 +79,7 @@ const Header = props => {
                             </IconButton>
                             <Link href="/wishlist" passHref>
                                 <a>
-                                    <IconButton className={classes.iconButton} onClick={() => openWishlist()}>
+                                    <IconButton className={classes.iconButton}>
                                         <FavoriteIcon className={classes.icon}/>
                                     </IconButton>
                                     {wishlist.length !== 0 &&

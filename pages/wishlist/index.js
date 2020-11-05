@@ -1,5 +1,5 @@
 import { withStyles, Container, Grid, Typography } from '@material-ui/core';
-import DefaultLayaout from '../../components/DefaultLayout';
+import DefaultLayout from '../../components/DefaultLayout';
 import ProductWishlist from '../../components/wishlist/ProductWishlist';
 
 const useStyles = (theme) => ({
@@ -16,7 +16,7 @@ const Wishlist = (props) => {
   const { classes } = props;
 
   return (
-    <DefaultLayaout>
+    <DefaultLayout>
       <Container maxWidth="lg" className={classes.root}>
         <Grid container justify={'center'}>
           <Grid item>
@@ -28,7 +28,7 @@ const Wishlist = (props) => {
           <ProductWishlist />
         </Grid>
       </Container>
-    </DefaultLayaout>
+    </DefaultLayout>
   );
 
 }
